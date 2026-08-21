@@ -41,10 +41,11 @@ const planeWidth = planeHeight * aspect;
 
         const geometry = new THREE.PlaneGeometry(planeWidth, planeHeight);
         const material = new THREE.MeshBasicMaterial({
-          map: this.texture,
-          transparent: true,
-          side: THREE.DoubleSide
-        });
+  map: this.texture,
+  transparent: true,
+  side: THREE.DoubleSide,
+  depthWrite: false
+});
         this.mesh = new THREE.Mesh(geometry, material);
         this.el.setObject3D('png-sequence-mesh', this.mesh);
 
