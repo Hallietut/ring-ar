@@ -12,12 +12,13 @@
   <script>
     AFRAME.registerComponent('png-sequence', {
       schema: {
-        folder: { type: 'string' },
-        frameCount: { type: 'number' },
-        fps: { type: 'number', default: 24 },
-        width: { type: 'number', default: 200 },
-        height: { type: 'number', default: 150 }
-      },
+  folder: { type: 'string' },
+  frameCount: { type: 'number' },
+  fps: { type: 'number', default: 24 },
+  width: { type: 'number', default: 200 },
+  height: { type: 'number', default: 150 },
+  scale: { type: 'number', default: 1 }
+},
 
       init: function () {
         this.frames = [];
@@ -35,8 +36,8 @@
 
         // Build the plane mesh with a transparent material using this texture
         const aspect = this.data.width / this.data.height;
-        const planeHeight = 0.3; // world-space size, tweak later if needed
-        const planeWidth = planeHeight * aspect;
+const planeHeight = 0.3 * this.data.scale;
+const planeWidth = planeHeight * aspect;
 
         const geometry = new THREE.PlaneGeometry(planeWidth, planeHeight);
         const material = new THREE.MeshBasicMaterial({
@@ -94,7 +95,7 @@ img.src = `${this.data.folder}/${frameNum}.png`;
     <a-entity mindar-image-target="targetIndex: 2">
       <a-entity
         position="0 0.2 0"
-        png-sequence="folder: anims/cherry; frameCount: 133; fps: 24; width: 200; height: 150"
+       png-sequence="folder: anims/cherry; frameCount: 133; fps: 24; width: 200; height: 150; scale: 5"
       ></a-entity>
     </a-entity>
 
