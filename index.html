@@ -89,7 +89,7 @@ img.src = `${this.data.folder}/${frameNum}.png`;
     vr-mode-ui="enabled: false"
     device-orientation-permission-ui="enabled: true"
   >
-    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+ <a-camera position="0 0 0" look-controls="enabled: false" camera="near: 0.01"></a-camera>
 
    <!-- 0: bug (backup) -->
 <a-entity mindar-image-target="targetIndex: 0">
