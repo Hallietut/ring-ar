@@ -51,8 +51,8 @@
         let loadedCount = 0;
         for (let i = 1; i <= this.data.frameCount; i++) {
           const img = new Image();
-          const frameNum = String(i).padStart(4, '0');
-          img.src = `${this.data.folder}/frame_${frameNum}.png`;
+         const frameNum = String(i).padStart(4, '0');
+img.src = `${this.data.folder}/${frameNum}.png`;
           img.onload = () => {
             loadedCount++;
             if (loadedCount === this.data.frameCount) {
