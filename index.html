@@ -3,12 +3,82 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-  <title>Ring AR Test</title>
+  <title>Ring AR</title>
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
   <style>
     body { margin: 0; overflow: hidden; }
   </style>
+  <script>
+    AFRAME.registerComponent('png-sequence', {
+      schema: {
+        folder: { type: 'string' },
+        frameCount: { type: 'number' },
+        fps: { type: 'number', default: 24 },
+        width: { type: 'number', default: 200 },
+        height: { type: 'number', default: 150 }
+      },
+
+      init: function () {
+        this.frames = [];
+        this.currentFrame = 0;
+        this.loaded = false;
+
+        // Create an offscreen canvas we draw each frame onto
+        this.canvas = document.createElement('canvas');
+        this.canvas.width = this.data.width;
+        this.canvas.height = this.data.height;
+        this.ctx = this.canvas.getContext('2d');
+
+        // Create the three.js texture from that canvas
+        this.texture = new THREE.CanvasTexture(this.canvas);
+
+        // Build the plane mesh with a transparent material using this texture
+        const aspect = this.data.width / this.data.height;
+        const planeHeight = 0.3; // world-space size, tweak later if needed
+        const planeWidth = planeHeight * aspect;
+
+        const geometry = new THREE.PlaneGeometry(planeWidth, planeHeight);
+        const material = new THREE.MeshBasicMaterial({
+          map: this.texture,
+          transparent: true,
+          side: THREE.DoubleSide
+        });
+        this.mesh = new THREE.Mesh(geometry, material);
+        this.el.setObject3D('png-sequence-mesh', this.mesh);
+
+        // Preload all frames
+        let loadedCount = 0;
+        for (let i = 1; i <= this.data.frameCount; i++) {
+          const img = new Image();
+          const frameNum = String(i).padStart(4, '0');
+          img.src = `${this.data.folder}/frame_${frameNum}.png`;
+          img.onload = () => {
+            loadedCount++;
+            if (loadedCount === this.data.frameCount) {
+              this.loaded = true;
+            }
+          };
+          this.frames.push(img);
+        }
+
+        this.lastFrameTime = 0;
+        this.frameDuration = 1000 / this.data.fps;
+      },
+
+      tick: function (time) {
+        if (!this.loaded) return;
+        if (time - this.lastFrameTime < this.frameDuration) return;
+        this.lastFrameTime = time;
+
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.drawImage(this.frames[this.currentFrame], 0, 0, this.canvas.width, this.canvas.height);
+        this.texture.needsUpdate = true;
+
+        this.currentFrame = (this.currentFrame + 1) % this.data.frameCount;
+      }
+    });
+  </script>
 </head>
 <body>
   <a-scene
@@ -18,44 +88,39 @@
     vr-mode-ui="enabled: false"
     device-orientation-permission-ui="enabled: true"
   >
-    <a-assets></a-assets>
-
     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-    <!-- 0: bug -->
-    <a-entity mindar-image-target="targetIndex: 0">
-      <a-box position="0 0.2 0" width="0.2" height="0.2" depth="0.2" color="red"
-        animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; easing: linear"></a-box>
-    </a-entity>
-
-    <!-- 1: cat -->
-    <a-entity mindar-image-target="targetIndex: 1">
-      <a-box position="0 0.2 0" width="0.2" height="0.2" depth="0.2" color="orange"
-        animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; easing: linear"></a-box>
-    </a-entity>
-
-    <!-- 2: cherry -->
+    <!-- 2: cherry — real animation -->
     <a-entity mindar-image-target="targetIndex: 2">
-      <a-box position="0 0.2 0" width="0.2" height="0.2" depth="0.2" color="yellow"
-        animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; easing: linear"></a-box>
+      <a-entity
+        position="0 0.2 0"
+        png-sequence="folder: anims/cherry; frameCount: 84; fps: 24; width: 200; height: 150"
+      ></a-entity>
     </a-entity>
 
-    <!-- 3: snail -->
+    <!-- 0: bug (still placeholder box for now) -->
+    <a-entity mindar-image-target="targetIndex: 0">
+      <a-box position="0 0.2 0" width="0.2" height="0.2" depth="0.2" color="red"></a-box>
+    </a-entity>
+
+    <!-- 1: cat (still placeholder) -->
+    <a-entity mindar-image-target="targetIndex: 1">
+      <a-box position="0 0.2 0" width="0.2" height="0.2" depth="0.2" color="orange"></a-box>
+    </a-entity>
+
+    <!-- 3: snail (still placeholder) -->
     <a-entity mindar-image-target="targetIndex: 3">
-      <a-box position="0 0.2 0" width="0.2" height="0.2" depth="0.2" color="green"
-        animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; easing: linear"></a-box>
+      <a-box position="0 0.2 0" width="0.2" height="0.2" depth="0.2" color="green"></a-box>
     </a-entity>
 
-    <!-- 4: star -->
+    <!-- 4: star (still placeholder) -->
     <a-entity mindar-image-target="targetIndex: 4">
-      <a-box position="0 0.2 0" width="0.2" height="0.2" depth="0.2" color="blue"
-        animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; easing: linear"></a-box>
+      <a-box position="0 0.2 0" width="0.2" height="0.2" depth="0.2" color="blue"></a-box>
     </a-entity>
 
-    <!-- 5: yellowalien -->
+    <!-- 5: yellowalien (still placeholder) -->
     <a-entity mindar-image-target="targetIndex: 5">
-      <a-box position="0 0.2 0" width="0.2" height="0.2" depth="0.2" color="purple"
-        animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; easing: linear"></a-box>
+      <a-box position="0 0.2 0" width="0.2" height="0.2" depth="0.2" color="purple"></a-box>
     </a-entity>
 
   </a-scene>
