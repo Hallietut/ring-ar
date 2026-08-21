@@ -91,38 +91,45 @@ img.src = `${this.data.folder}/${frameNum}.png`;
   >
     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-    <!-- 2: cherry — real animation -->
-    <a-entity mindar-image-target="targetIndex: 2">
-      <a-entity
-        position="0 0.2 0"
-       png-sequence="folder: anims/cherry; frameCount: 133; fps: 24; width: 200; height: 150; scale: 10"
-      ></a-entity>
-    </a-entity>
+   <!-- 0: bug (backup) -->
+<a-entity mindar-image-target="targetIndex: 0">
+  <a-entity
+    position="0 0.2 0"
+    png-sequence="folder: anims/bug; frameCount: 43; fps: 24; width: 200; height: 150; scale: 10"
+  ></a-entity>
+</a-entity>
 
-    <!-- 0: bug (still placeholder box for now) -->
-    <a-entity mindar-image-target="targetIndex: 0">
-      <a-box position="0 0.2 0" width="0.2" height="0.2" depth="0.2" color="red"></a-box>
-    </a-entity>
+<!-- 1: cat -->
+<a-entity mindar-image-target="targetIndex: 1">
+  <a-entity
+    position="0 0.2 0"
+    png-sequence="folder: anims/cat; frameCount: 176; fps: 24; width: 200; height: 150; scale: 10"
+  ></a-entity>
+</a-entity>
 
-    <!-- 1: cat (still placeholder) -->
-    <a-entity mindar-image-target="targetIndex: 1">
-      <a-box position="0 0.2 0" width="0.2" height="0.2" depth="0.2" color="orange"></a-box>
-    </a-entity>
+<!-- 2: cherry -->
+<a-entity mindar-image-target="targetIndex: 2">
+  <a-entity
+    position="0 0.2 0"
+    png-sequence="folder: anims/cherry; frameCount: 133; fps: 24; width: 200; height: 150; scale: 10"
+  ></a-entity>
+</a-entity>
 
-    <!-- 3: snail (still placeholder) -->
-    <a-entity mindar-image-target="targetIndex: 3">
-      <a-box position="0 0.2 0" width="0.2" height="0.2" depth="0.2" color="green"></a-box>
-    </a-entity>
+<!-- 3: snail -->
+<a-entity mindar-image-target="targetIndex: 3">
+  <a-entity
+    position="0 0.2 0"
+    png-sequence="folder: anims/snail; frameCount: 84; fps: 24; width: 200; height: 150; scale: 10"
+  ></a-entity>
+</a-entity>
 
-    <!-- 4: star (still placeholder) -->
-    <a-entity mindar-image-target="targetIndex: 4">
-      <a-box position="0 0.2 0" width="0.2" height="0.2" depth="0.2" color="blue"></a-box>
-    </a-entity>
-
-    <!-- 5: yellowalien (still placeholder) -->
-    <a-entity mindar-image-target="targetIndex: 5">
-      <a-box position="0 0.2 0" width="0.2" height="0.2" depth="0.2" color="purple"></a-box>
-    </a-entity>
+<!-- 4: star -->
+<a-entity mindar-image-target="targetIndex: 4">
+  <a-entity
+    position="0 0.2 0"
+    png-sequence="folder: anims/star; frameCount: 72; fps: 24; width: 200; height: 150; scale: 10"
+  ></a-entity>
+</a-entity>
 
   </a-scene>
 </body>
